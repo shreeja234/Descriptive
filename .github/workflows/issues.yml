@@ -17,7 +17,7 @@ jobs:
         JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
       run: |
          curl --request POST \
-           --url '${JIRA_BASE_URL}' \
+           --url '${JIRA_BASE_URL}/rest/api/2/issue' \
            --user '${JIRA_EMAIL}:${JIRA_API_TOKEN}' \
            --header 'Accept: application/json' \
            --header 'Content-Type: application/json' \
