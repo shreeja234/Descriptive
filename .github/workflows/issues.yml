@@ -2,24 +2,38 @@ name: Create Jira Issue
 on:
   push:
     branches:
-      - main  # Trigger the workflow on pushes to the main branch
-
+      - main
 jobs:
-  create_issue:
+  create-jira-issue:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2  # Checkout the repository's code
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Create Jira Issue
+      env:
+        JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+        JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+      run: |
+        JIRA_PROJECT_KEY="TT"
+        SUMMARY="Issue created from GitHub Actions"
+        DESCRIPTION="This issue was created automatically using GitHub Actions."
+        AUTH=$(echo -n $JIRA_EMAIL:$JIRA_API_TOKEN | base64)
+        curl -X POST -H "Content-Type: application/json" \
+        -H "Authorization: Basic $AUTH" \
+        --data '{
+          "fields": {
+            "project": {
+              "key": "TT"
+            },
+            "summary": "'$SUMMARY'",
+            "description": "'$DESCRIPTION'",
+            "issuetype": {
+              "name": "Task"
+            }
 
-      - name: Set up Python
-        uses: actions/setup-python@v2  # Set up Python environment
+          }
 
-      - name: Install Dependencies
-        run: pip install requests  # Install requests library
+        }' \
 
-      - name: Create Jira Issue
-        env:
-          JIRA_URL: ${{ secrets.JIRA_URL }}  # Access Jira URL from repository secrets
-          JIRA_TOKEN: ${{ secrets.JIRA_TOKEN }}  # Access Jira token from repository secrets
-        run: python create_issue.py  # Run script to create Jira issue
+        $JIRA_BASE_URL/rest/api/2/issue/
