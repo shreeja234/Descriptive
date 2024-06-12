@@ -21,6 +21,7 @@ jobs:
           SUMMARY="Issue created from GitHub Actions"
           DESCRIPTION="This issue was created automatically using GitHub Actions."
           AUTH=$(echo -n $JIRA_EMAIL:$JIRA_API_TOKEN | base64)
+          curl -X POST -H "Content-Type: application/json" \
           -H "Authorization: Basic $AUTH" \
           -d '{
             "fields": {
