@@ -15,7 +15,7 @@ jobs:
         JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
         JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
       run: |
-         curl --request POST   --url '$JIRA_BASE_URL'   --user '$JIRA_EMAIL:JIRA_API_TOKEN'   --header 'Accept: application/json'   --header 'Content-Type: application/json'   --data '{
+         curl --request POST   --url $JIRA_BASE_URL   --user '$JIRA_EMAIL:JIRA_API_TOKEN'   --header 'Accept: application/json'   --header 'Content-Type: application/json'   --data '{
          "fields": {
           "project": {
           "key": "SS"
