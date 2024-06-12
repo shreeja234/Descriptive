@@ -24,7 +24,7 @@ jobs:
            --data '{
              "fields": {
                "project": {
-                 "key": "SS"
+                 "key": "TT"
                },
                "summary": "Main order flow broken",
                "issuetype": {
