@@ -18,7 +18,7 @@ jobs:
           JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
           JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
         run: |
-          JIRA_PROJECT_KEY="TT"
+          JIRA_PROJECT_KEY="SS"
           SUMMARY="Issue created from GitHub Actions"
           DESCRIPTION="This issue was created automatically using GitHub Actions."
           AUTH=$(echo -n $JIRA_EMAIL:$JIRA_API_TOKEN | base64)
