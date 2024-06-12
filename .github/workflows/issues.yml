@@ -1,27 +1,17 @@
 name: Create Jira Issue
- 
+
 on:
-  push:
-    branches:
-      - main
- 
+  issues:
+    types: Task
+
 jobs:
-  create-jira-issue:
+  createJiraIssue:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
- 
       - name: Create Jira Issue
-        env:
-          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
-          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
-          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
-        run: |
-          JIRA_PROJECT_KEY="SS"
-          SUMMARY="Issue created from GitHub Actions"
-          DESCRIPTION="This issue was created automatically using GitHub Actions."
-          AUTH=$(echo -n $JIRA_EMAIL:$JIRA_API_TOKEN | base64)
-          curl -X POST -H "Content-Type: application/json" \
-          -H "Authorization: Basic $AUTH" \
-  
+        with:
+          title: ${{ github.event.issue.title }}
+          body: ${{ github.event.issue.body }}
+          project: 'SS'
+          # Other necessary parameters for the integration
