@@ -1,52 +1,23 @@
-name: Create Jira Issue
-on:
-  push:
-    branches:
-      - main
+import requests
 
-jobs:
-  create-jira-issue:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+JIRA_PROJECT_KEY = "TT"
+SUMMARY = "Issue created from GitHub Actions"
+DESCRIPTION = "This issue was created automatically using GitHub Actions."
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
+url = f"{JIRA_BASE_URL}/rest/api/2/issue/"
+auth = (JIRA_EMAIL, JIRA_API_TOKEN)
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install requests
+issue_data = {
+    "fields": {
+        "project": {"key": JIRA_PROJECT_KEY},
+        "summary": SUMMARY,
+        "description": DESCRIPTION,
+        "issuetype": {"name": "Task"}
+    }
+}
 
-      - name: Create Jira Issue
-        env:
-          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
-          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
-          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
-        run: |
-          import requests
-
-          JIRA_PROJECT_KEY = "TT"
-          SUMMARY = "Issue created from GitHub Actions"
-          DESCRIPTION = "This issue was created automatically using GitHub Actions."
-
-          url = f"{JIRA_BASE_URL}/rest/api/2/issue/"
-          auth = (JIRA_EMAIL, JIRA_API_TOKEN)
-
-          issue_data = {
-              "fields": {
-                  "project": {"key": JIRA_PROJECT_KEY},
-                  "summary": SUMMARY,
-                  "description": DESCRIPTION,
-                  "issuetype": {"name": "Task"}
-              }
-          }
-
-          response = requests.post(url, json=issue_data, auth=auth)
-          if response.status_code == 201:
-              print("Issue created successfully.")
-          else:
-              print(f"Failed to create issue. Status code: {response.status_code}")
+response = requests.post(url, json=issue_data, auth=auth)
+if response.status_code == 201:
+    print("Issue created successfully.")
+else:
+    print(f"Failed to create issue. Status code: {response.status_code}")
