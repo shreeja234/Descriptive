@@ -11,24 +11,15 @@ jobs:
       uses: actions/checkout@v2
       
     - name: Create Jira Issue
-      env:
-        JIRA_BASE_URL: ${{ secrets.JIRA_URL }}
-        JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
-        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
       run: |
-         curl --request POST \
-           --url 'https://infinityink.atlassian.net/rest/api/2/issue' \
-           --user '${JIRA_EMAIL}:${JIRA_API_TOKEN}' \
-           --header 'Accept: application/json' \
-           --header 'Content-Type: application/json' \
-           --data '{
-             "fields": {
-               "project": {
-                 "key": "TT"
-               },
-               "summary": "Main order flow broken",
-               "issuetype": {
-                 "id": "10007"
-               }
-             }
+         curl --request POST   --url 'https://infinityink.atlassian.net/rest/api/3/issue/'    --user 'shreejaj@devtools.in:ATATT3xFfGF0mrrG_oc-XEksRDENEvoZs5GDe1UPxMdZfF1kOYrJ0W8lBxDhthigxCfn1wqWsXV-xAIjJ9KCX6mwvGd1eaESZ6i_FRBJzMQfBXv3ScgSYtV6nNYsBnN_zSb4qANjwRK4TC02CXAu_u-Yk-YnqbyiqDkWdEcOrks1yd0HqTICI1w=E4F76383'   --header 'Accept: application/json'   --header 'Content-Type: application/json'   --data '{
+         "fields": {
+          "project": {
+          "key": "SS"
+           },
+         "summary": "Main order flow broken",
+          "issuetype": {
+          "id": "10007"
+            }
+           }
            }'
