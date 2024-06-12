@@ -1,23 +1,69 @@
-import requests
+name: Create Jira Issue
+ 
+on:
 
-JIRA_PROJECT_KEY = "TT"
-SUMMARY = "Issue created from GitHub Actions"
-DESCRIPTION = "This issue was created automatically using GitHub Actions."
+  push:
 
-url = f"{JIRA_BASE_URL}/rest/api/2/issue/"
-auth = (JIRA_EMAIL, JIRA_API_TOKEN)
+    branches:
 
-issue_data = {
-    "fields": {
-        "project": {"key": JIRA_PROJECT_KEY},
-        "summary": SUMMARY,
-        "description": DESCRIPTION,
-        "issuetype": {"name": "Task"}
-    }
-}
+      - main
+ 
+jobs:
 
-response = requests.post(url, json=issue_data, auth=auth)
-if response.status_code == 201:
-    print("Issue created successfully.")
-else:
-    print(f"Failed to create issue. Status code: {response.status_code}")
+  create-jira-issue:
+
+    runs-on: ubuntu-latest
+ 
+    steps:
+
+    - name: Checkout code
+
+      uses: actions/checkout@v2
+ 
+    - name: Create Jira Issue
+
+      env:
+
+        JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+
+        JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+
+        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+
+      run: |
+
+        JIRA_PROJECT_KEY="PROJ"
+
+        SUMMARY="Issue created from GitHub Actions"
+
+        DESCRIPTION="This issue was created automatically using GitHub Actions."
+ 
+        AUTH=$(echo -n $JIRA_EMAIL:$JIRA_API_TOKEN | base64)
+
+        -H "Authorization: Basic $AUTH" \
+
+        --data '{
+
+          "fields": {
+
+            "project": {
+
+              "key": "'$JIRA_PROJECT_KEY'"
+
+            },
+
+            "summary": "'$SUMMARY'",
+
+            "description": "'$DESCRIPTION'",
+
+            "issuetype": {
+
+              "name": "Task"
+
+            }
+
+          }
+
+        }' \
+
+        $JIRA_BASE_URL/rest/api/2/issue/
