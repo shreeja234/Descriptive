@@ -26,7 +26,7 @@ jobs:
               "project": {
                 "key": "SS"
               },
-              "summary": "Main order flow broken",
+              "summary": "Task Master",
               "issuetype": {
                 "id": "10007"
               }
